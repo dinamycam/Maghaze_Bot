@@ -35,20 +35,32 @@ func url2File(url, fname string) int64 {
 	return n
 }
 
-// my check function
+// error check function
 func check(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
+func Password_compare(pass string) bool {
+	realpass := os.Getenv("TGBOTPASS")
+	fmt.Println(realpass)
+	return (realpass == pass)
+}
+
+// password correction checking
+func pass_checker(result *string, pass string) bool {
+	if !Password_compare(pass) {
+		*result = "password wrong"
+		return false
+	} else {
+		*result = "correct! you gain admin access"
+		return true
+	}
+}
+
 // this is the main
 func main() {
-
-	// in1 := []byte("hello go\n")
-
-	// err := ioutil.WriteFile("notes.txt", in1, 0644)
-	// check(err)
 
 	tgbot := os.Getenv("TGBOT")
 
@@ -57,10 +69,12 @@ func main() {
 	// newbot.Debug = true
 
 	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
+	u.Timeout = 30
 
-	updates, _ := newbot.GetUpdatesChan(u)
+	updates, err := newbot.GetUpdatesChan(u)
+	check(err)
 
+	// this is where everything happens
 	for update := range updates {
 		if update.Message == nil {
 			continue
@@ -77,15 +91,15 @@ func main() {
 		}
 
 		// handling Documents
-		switch update.Message.Document {
-		case nil:
-			continue
-		default:
-			msgtime := update.Message.Time()
-			url, _ := newbot.GetFileDirectURL(update.Message.Document.FileID)
-			msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
-			url2File(url, update.Message.Document.FileName)
-		}
+		// switch update.Message.Document {
+		// case nil:
+		// 	continue
+		// default:
+		// 	msgtime := update.Message.Time()
+		// 	url, _ := newbot.GetFileDirectURL(update.Message.Document.FileID)
+		// 	msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
+		// 	url2File(url, update.Message.Document.FileName)
+		// }
 		// telegram slash commands
 		if update.Message.IsCommand() {
 			switch update.Message.Command() {
@@ -94,12 +108,11 @@ func main() {
 				msg.ReplyMarkup = SalesKeyboard
 			case "login":
 				password := update.Message.CommandArguments()
-				fmt.Printf("argument = %+v\n", password)
-				msg.Text = "your password is :" + password
+				fmt.Printf("password entered: = %+v\n", password)
+				pass_checker(&msg.Text, password)
 			}
 		}
 		// msg.Text = "grrr XD"
 		newbot.Send(msg)
 	}
-
 }
