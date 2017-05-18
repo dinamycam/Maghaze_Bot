@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 
+	"./utils/password"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -18,7 +19,7 @@ var SalesKeyboard = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButton("Wires"),
 	),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("1"),
+		tgbotapi.NewKeyboardButton("Close"),
 		tgbotapi.NewKeyboardButton("2"),
 	),
 )
@@ -39,23 +40,6 @@ func url2File(url, fname string) int64 {
 func check(e error) {
 	if e != nil {
 		panic(e)
-	}
-}
-
-func Password_compare(pass string) bool {
-	realpass := os.Getenv("TGBOTPASS")
-	fmt.Println(realpass)
-	return (realpass == pass)
-}
-
-// password correction checking
-func pass_checker(result *string, pass string) bool {
-	if !Password_compare(pass) {
-		*result = "password wrong"
-		return false
-	} else {
-		*result = "correct! you gain admin access"
-		return true
 	}
 }
 
@@ -91,15 +75,16 @@ func main() {
 		}
 
 		// handling Documents
-		// switch update.Message.Document {
-		// case nil:
-		// 	continue
-		// default:
-		// 	msgtime := update.Message.Time()
-		// 	url, _ := newbot.GetFileDirectURL(update.Message.Document.FileID)
-		// 	msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
-		// 	url2File(url, update.Message.Document.FileName)
-		// }
+		if update.Message.Document.FileID != "" {
+
+			msgtime := update.Message.Time()
+			url, _ := newbot.GetFileDirectURL(update.Message.Document.FileID)
+			msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
+			url2File(url, update.Message.Document.FileName)
+
+		} else {
+			fmt.Println("Empty document")
+		}
 		// telegram slash commands
 		if update.Message.IsCommand() {
 			switch update.Message.Command() {
@@ -107,9 +92,9 @@ func main() {
 				msg.Text = "Welcome to our shop!"
 				msg.ReplyMarkup = SalesKeyboard
 			case "login":
-				password := update.Message.CommandArguments()
-				fmt.Printf("password entered: = %+v\n", password)
-				pass_checker(&msg.Text, password)
+				tgpass := update.Message.CommandArguments()
+				fmt.Printf("password entered: = %+v\n", tgpass)
+				password.Pass_checker(&msg.Text, tgpass)
 			}
 		}
 		// msg.Text = "grrr XD"
