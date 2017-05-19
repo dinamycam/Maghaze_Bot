@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"./utils"
-	"./utils/password"
+	"github.com/pouya-barzegar/Maghaze_Bot/utils"
+	"github.com/pouya-barzegar/Maghaze_Bot/utils/password"
 
 	"gopkg.in/telegram-bot-api.v4"
 )
