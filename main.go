@@ -29,7 +29,7 @@ func main() {
 
 	authorize_admin := false
 
-	var helpMessage = "\n/start 			 : starts the bot\n	/help 			: to see the CommandArguments\n/login PASSWORD  : to gain admin access"
+	var helpMessage = "\n /start  starts the bot\n /help  to see the CommandArguments\n /login PASSWORD  to gain admin access"
 
 	tgbot := os.Getenv("TGBOT")
 

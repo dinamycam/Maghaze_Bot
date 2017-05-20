@@ -33,7 +33,7 @@ func Doc_reader(fname string) string {
 // working with .xlsx files
 func Excel2str(fname string) string {
 
-	var rows_string string
+	row_string := ""
 
 	xlsx, err := excelize.OpenFile(fname)
 	if err != nil {
