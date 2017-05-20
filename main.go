@@ -27,6 +27,8 @@ var SalesKeyboard = tgbotapi.NewReplyKeyboard(
 // this is the main
 func main() {
 
+	authorize_admin := false
+
 	var helpMessage = "\n/start 			 : starts the bot\n	/help 			: to see the CommandArguments\n/login PASSWORD  : to gain admin access"
 
 	tgbot := os.Getenv("TGBOT")
@@ -68,7 +70,7 @@ func main() {
 		// 	msgtime := update.Message.Time()
 		// 	url, _ := bot.GetFileDirectURL(update.Message.Document.FileID)
 		// 	msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
-		// utils.url2File(url, update.Message.Document.FileName)
+		// utils.Url2File(url, update.Message.Document.FileName)
 
 		// }
 
@@ -80,8 +82,23 @@ func main() {
 			case "login":
 				tgpass := update.Message.CommandArguments()
 				fmt.Printf("password entered: = %+v\n", tgpass)
-				password.Pass_checker(&msg.Text, tgpass)
+				authorize_admin = password.Pass_checker(&msg.Text, tgpass)
+			case "senddoc":
+				if authorize_admin {
+					msg.Text = "You may enter the message"
 
+					// 	msgtime := update.Message.Time()
+					// getting the document
+					// 	url, _ := bot.GetFileDirectURL(update.Message.Document.FileID)
+					// 	msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
+					// utils.Url2File(url, update.Message.Document.FileName)
+
+				} else {
+					msg.Text = "You should first try to /login ."
+				}
+			case "logout":
+				authorize_admin = false
+				msg.Text = "you logged out\n switch to normal user"
 			case "help":
 				msg.Text = helpMessage
 			}
