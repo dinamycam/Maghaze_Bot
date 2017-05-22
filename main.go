@@ -28,10 +28,12 @@ var SalesKeyboard = tgbotapi.NewReplyKeyboard(
 func main() {
 
 	authorize_admin := false
+	IsDocument := false
 
 	var helpMessage = "\n /start  starts the bot\n /help  to see the CommandArguments\n /login PASSWORD  to gain admin access"
 
 	tgbot := os.Getenv("TGBOT")
+	data_dir := os.Getenv("TGBOTDATA")
 
 	bot, _ := tgbotapi.NewBotAPI(tgbot)
 
@@ -50,6 +52,16 @@ func main() {
 		}
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 
+		// Getting the damn Document
+		if IsDocument {
+			msgtime := update.Message.Time()
+			url, _ := bot.GetFileDirectURL(update.Message.Document.FileID)
+			msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
+			utils.Url2File(url, update.Message.Document.FileName)
+
+			IsDocument = false
+		}
+
 		// what every Button does
 		switch update.Message.Text {
 		case "open":
@@ -60,19 +72,15 @@ func main() {
 		case "end":
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		default:
-			msg.Text = "Sorry unknown commmand :("
+			if IsDocument {
+				msgtime := update.Message.Time()
+				url, _ := bot.GetFileDirectURL(update.Message.Document.FileID)
+				msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
+				utils.Url2File(url, data_dir+update.Message.Document.FileName)
+
+				IsDocument = false
+			}
 		}
-
-		// checking if we received a  Document
-		// if update.Message.Document.FileID != "" {
-		// 	// Download it
-
-		// 	msgtime := update.Message.Time()
-		// 	url, _ := bot.GetFileDirectURL(update.Message.Document.FileID)
-		// 	msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
-		// utils.Url2File(url, update.Message.Document.FileName)
-
-		// }
 
 		if update.Message.IsCommand() {
 			switch update.Message.Command() {
@@ -86,15 +94,11 @@ func main() {
 			case "senddoc":
 				if authorize_admin {
 					msg.Text = "You may enter the message"
-
-					// 	msgtime := update.Message.Time()
-					// getting the document
-					// 	url, _ := bot.GetFileDirectURL(update.Message.Document.FileID)
-					// 	msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
-					// utils.Url2File(url, update.Message.Document.FileName)
+					IsDocument = true
 
 				} else {
 					msg.Text = "You should first try to /login ."
+					// IsDocument = false
 				}
 			case "logout":
 				authorize_admin = false
