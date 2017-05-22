@@ -71,6 +71,10 @@ func main() {
 			// msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		case "end":
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+		case "Routers":
+			msg.Text = utils.Excel2str(data_dir + "/latest.xlsx")
+		case "Switches":
+			msg.Text = utils.Excel2str(data_dir + "/latest.xlsx")
 		default:
 			if IsDocument {
 				msgtime := update.Message.Time()
