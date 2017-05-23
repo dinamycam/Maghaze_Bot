@@ -30,7 +30,11 @@ func main() {
 	authorize_admin := false
 	IsDocument := false
 
-	var helpMessage = "\n /start  starts the bot\n /help  to see the CommandArguments\n /login PASSWORD  to gain admin access"
+	var helpMessage = `you can use these commands to control this bot
+	/start  starts the bot
+	/help  to see the CommandArguments
+	/login PASSWORD  to gain admin access
+	/logout turn back to a normal user`
 
 	tgbot := os.Getenv("TGBOT")
 	data_dir := os.Getenv("TGBOTDATA")
@@ -52,16 +56,6 @@ func main() {
 		}
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 
-		// Getting the damn Document
-		if IsDocument {
-			msgtime := update.Message.Time()
-			url, _ := bot.GetFileDirectURL(update.Message.Document.FileID)
-			msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
-			utils.Url2File(url, update.Message.Document.FileName)
-
-			IsDocument = false
-		}
-
 		// what every Button does
 		switch update.Message.Text {
 		case "open":
@@ -72,15 +66,15 @@ func main() {
 		case "end":
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		case "Routers":
-			msg.Text = utils.Excel2str(data_dir + "/latest.xlsx")
+			msg.Text = utils.Excel2str(data_dir + "/routers.xlsx")
 		case "Switches":
-			msg.Text = utils.Excel2str(data_dir + "/latest.xlsx")
+			msg.Text = utils.Excel2str(data_dir + "/switches.xlsx")
 		default:
 			if IsDocument {
 				msgtime := update.Message.Time()
 				url, _ := bot.GetFileDirectURL(update.Message.Document.FileID)
 				msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
-				utils.Url2File(url, data_dir+update.Message.Document.FileName)
+				utils.Url2File(url, data_dir+"/"+update.Message.Document.FileName)
 
 				IsDocument = false
 			}
@@ -97,7 +91,7 @@ func main() {
 				authorize_admin = password.Pass_checker(&msg.Text, tgpass)
 			case "senddoc":
 				if authorize_admin {
-					msg.Text = "You may enter the message"
+					msg.Text = "You may Now send the doc"
 					IsDocument = true
 
 				} else {
@@ -111,7 +105,6 @@ func main() {
 				msg.Text = helpMessage
 			}
 		}
-		// msg.Text = "grrr XD"
 		bot.Send(msg)
 	}
 }
