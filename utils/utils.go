@@ -33,12 +33,12 @@ func Doc_reader(fname string) string {
 // working with .xlsx files
 func Excel2str(fname string) string {
 
-	row_string := ""
-
+	raw_string := ""
 	xlsx, err := excelize.OpenFile(fname)
 	if err != nil {
 		fmt.Println(err)
-		os.Exit(1)
+		raw_string = `Sorry, File was not there :(
+					  add a file or wait!`
 	}
 
 	// Get sheet index.
@@ -46,14 +46,15 @@ func Excel2str(fname string) string {
 
 	// Get all the rows in a sheet.
 	rows := xlsx.GetRows("sheet" + strconv.Itoa(index))
+
 	for _, row := range rows {
 		for _, colCell := range row {
 			// fmt.Print(colCell, "\t")
-			row_string += colCell + "\t"
+			raw_string += colCell + "\t"
 		}
-		row_string += "\n"
+		raw_string += "\n"
 	}
-	return row_string
+	return raw_string
 }
 
 // Url2File url, fname and returns int64
