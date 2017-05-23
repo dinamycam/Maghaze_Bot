@@ -39,6 +39,7 @@ func Excel2str(fname string) string {
 		fmt.Println(err)
 		raw_string = `Sorry, File was not there :(
 					  add a file or wait!`
+		return raw_string
 	}
 
 	// Get sheet index.
