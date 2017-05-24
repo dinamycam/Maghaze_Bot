@@ -31,17 +31,17 @@ func main() {
 	IsDocument := false
 
 	var helpMessage = `you can use these commands to control this bot
-	/start  starts the bot
-	/help  to see the CommandArguments
-	/login PASSWORD  to gain admin access
-	/logout turn back to a normal user`
+						/start  starts the bot
+						/help  to see the CommandArguments
+						/login PASSWORD  to gain admin access
+						/logout turn back to a normal user`
 
 	tgbot := os.Getenv("TGBOT")
 	data_dir := os.Getenv("TGBOTDATA")
 
 	bot, _ := tgbotapi.NewBotAPI(tgbot)
 
-	// newbot.Debug = true
+	// bot.Debug = true
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 30
@@ -66,9 +66,15 @@ func main() {
 		case "end":
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		case "Routers":
-			msg.Text = utils.Excel2str(data_dir + "/routers.xlsx")
+			// msg.Text = utils.Excel2str(data_dir + "routers.xlsx")
+			msg.Text = utils.Excel2str("routers.xlsx", data_dir)
+			fmt.Println(msg.Text)
 		case "Switches":
 			msg.Text = utils.Excel2str(data_dir + "/switches.xlsx")
+			fmt.Println(msg.Text)
+		case "Wires":
+			msg.Text = utils.Excel2str(data_dir + "/wires.xlsx")
+			fmt.Println(msg.Text)
 		default:
 			if IsDocument {
 				msgtime := update.Message.Time()
@@ -84,6 +90,7 @@ func main() {
 			switch update.Message.Command() {
 			case "start":
 				msg.Text = "Welcome to our shop!"
+				fmt.Println("data directory: " + data_dir)
 				msg.ReplyMarkup = SalesKeyboard
 			case "login":
 				tgpass := update.Message.CommandArguments()
@@ -96,7 +103,6 @@ func main() {
 
 				} else {
 					msg.Text = "You should first try to /login ."
-					// IsDocument = false
 				}
 			case "logout":
 				authorize_admin = false

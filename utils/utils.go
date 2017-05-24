@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/Luxurioust/excelize"
@@ -34,11 +35,13 @@ func Doc_reader(fname string) string {
 func Excel2str(fname string) string {
 
 	raw_string := ""
+	abspath, patherr := filepath.Abs(filepath.Dir())
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	xlsx, err := excelize.OpenFile(fname)
 	if err != nil {
 		fmt.Println(err)
 		raw_string = `Sorry, File was not there :(
-					  add a file or wait!`
+			add a file or try again later!`
 		return raw_string
 	}
 
