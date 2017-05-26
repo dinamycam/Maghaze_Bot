@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"path"
 	"path/filepath"
 	"strconv"
 
@@ -37,7 +36,7 @@ func Excel2str(fname string, fdir string) string {
 
 	raw_string := ""
 	full_dir, err := filepath.Abs(fdir)
-	full_name, err := full_dir + "/" + fname
+	full_name := full_dir + "/" + fname
 	Check(err)
 	fmt.Printf("full file address = %+v\n", full_name)
 
