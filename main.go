@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	// "./utils"
+	// "./utils/password"
 	"github.com/pouya-barzegar/Maghaze_Bot/utils"
 	"github.com/pouya-barzegar/Maghaze_Bot/utils/password"
 
@@ -70,10 +72,10 @@ func main() {
 			msg.Text = utils.Excel2str("routers.xlsx", data_dir)
 			fmt.Println(msg.Text)
 		case "Switches":
-			msg.Text = utils.Excel2str(data_dir + "/switches.xlsx")
+			msg.Text = utils.Excel2str("switches.xlsx", data_dir)
 			fmt.Println(msg.Text)
 		case "Wires":
-			msg.Text = utils.Excel2str(data_dir + "/wires.xlsx")
+			msg.Text = utils.Excel2str("wires.xlsx", data_dir)
 			fmt.Println(msg.Text)
 		default:
 			if IsDocument {

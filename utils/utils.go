@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 
@@ -16,7 +17,7 @@ import (
 // error check function
 func Check(e error) {
 	if e != nil {
-		panic(e)
+		fmt.Println("Problem found")
 	}
 }
 
@@ -32,12 +33,14 @@ func Doc_reader(fname string) string {
 }
 
 // working with .xlsx files
-func Excel2str(fname string) string {
+func Excel2str(fname string, fdir string) string {
 
 	raw_string := ""
-	abspath, patherr := filepath.Abs(filepath.Dir())
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	xlsx, err := excelize.OpenFile(fname)
+	full_dir, err := filepath.Abs(fdir)
+	Check(err)
+	fmt.Printf("full_dir = %+v\n", full_dir)
+
+	xlsx, err := excelize.OpenFile(path.Join(full_dir, fname))
 	if err != nil {
 		fmt.Println(err)
 		raw_string = `Sorry, File was not there :(
