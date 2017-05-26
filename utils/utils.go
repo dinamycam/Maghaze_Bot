@@ -37,10 +37,11 @@ func Excel2str(fname string, fdir string) string {
 
 	raw_string := ""
 	full_dir, err := filepath.Abs(fdir)
+	full_name, err := full_dir + "/" + fname
 	Check(err)
-	fmt.Printf("full_dir = %+v\n", full_dir)
+	fmt.Printf("full file address = %+v\n", full_name)
 
-	xlsx, err := excelize.OpenFile(path.Join(full_dir, fname))
+	xlsx, err := excelize.OpenFile(full_name)
 	if err != nil {
 		fmt.Println(err)
 		raw_string = `Sorry, File was not there :(

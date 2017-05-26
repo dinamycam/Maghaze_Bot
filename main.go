@@ -36,7 +36,8 @@ func main() {
 						/start  starts the bot
 						/help  to see the CommandArguments
 						/login PASSWORD  to gain admin access
-						/logout turn back to a normal user`
+						/logout turn back to a normal user
+						/senddoc send the files to the bot in the next message`
 
 	tgbot := os.Getenv("TGBOT")
 	data_dir := os.Getenv("TGBOTDATA")
