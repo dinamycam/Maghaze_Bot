@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"os"
 
+	"Maghaze_Bot/utils"
+	"Maghaze_Bot/utils/password"
 	// "./utils"
 	// "./utils/password"
-	"github.com/pouya-barzegar/Maghaze_Bot/utils"
-	"github.com/pouya-barzegar/Maghaze_Bot/utils/password"
+	// "github.com/pouya-barzegar/Maghaze_Bot/utils"
+	// "github.com/pouya-barzegar/Maghaze_Bot/utils/password"
 
 	"gopkg.in/telegram-bot-api.v4"
 )
