@@ -71,14 +71,13 @@ func main() {
 		case "end":
 			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		case "Routers":
-			// msg.Text = utils.Excel2str(data_dir + "routers.xlsx")
-			msg.Text = utils.Excel2str("routers.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("routers.xlsx", data_dir)
 			fmt.Println(msg.Text)
 		case "Switches":
-			msg.Text = utils.Excel2str("switches.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("switches.xlsx", data_dir)
 			fmt.Println(msg.Text)
 		case "Wires":
-			msg.Text = utils.Excel2str("wires.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("wires.xlsx", data_dir)
 			fmt.Println(msg.Text)
 		default:
 			if IsDocument {

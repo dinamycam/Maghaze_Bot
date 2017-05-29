@@ -11,6 +11,7 @@ import (
 	"strconv"
 
 	"github.com/Luxurioust/excelize"
+	"github.com/tealeg/xlsx"
 )
 
 // error check function
@@ -62,6 +63,28 @@ func Excel2str(fname string, fdir string) string {
 		raw_string += "\n"
 	}
 	return raw_string
+}
+
+func Tealeg_Excel2str(fname string, fdir string) string {
+	ret_string := ""
+	full_dir, err := filepath.Abs(fdir)
+	full_name := full_dir + "/" + fname
+	Check(err)
+	fmt.Printf("full file address = %+v\n", full_name)
+
+	xlFile, err := xlsx.OpenFile(full_name)
+	Check(err)
+
+	for _, sheet := range xlFile.Sheets {
+		for _, row := range sheet.Rows {
+			for _, cell := range row.Cells {
+				text, _ := cell.String()
+				ret_string += text + "\t"
+			}
+			ret_string += "\n"
+		}
+	}
+	return ret_string
 }
 
 // Url2File url, fname and returns int64
