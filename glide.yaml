@@ -1,0 +1,7 @@
+package: Maghaze_Bot
+import:
+- package: github.com/Luxurioust/excelize
+- package: gopkg.in/telegram-bot-api.v4
+  version: v4.6
+- package: github.com/tealeg/xlsx
+  version: v1.0.0
