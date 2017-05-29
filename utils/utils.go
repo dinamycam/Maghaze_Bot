@@ -17,7 +17,7 @@ import (
 // error check function
 func Check(e error) {
 	if e != nil {
-		fmt.Println("Problem found")
+		fmt.Println("++++++++    Problem found    +++++++++++++")
 	}
 }
 
@@ -65,15 +65,18 @@ func Excel2str(fname string, fdir string) string {
 	return raw_string
 }
 
-func Tealeg_Excel2str(fname string, fdir string) string {
-	ret_string := ""
+func Tealeg_Excel2str(fname string, fdir string) (ret_string string) {
+	ret_string = ""
 	full_dir, err := filepath.Abs(fdir)
 	full_name := full_dir + "/" + fname
 	Check(err)
 	fmt.Printf("full file address = %+v\n", full_name)
 
 	xlFile, err := xlsx.OpenFile(full_name)
-	Check(err)
+	if err != nil {
+		ret_string = "File not found"
+		return
+	}
 
 	for _, sheet := range xlFile.Sheets {
 		for _, row := range sheet.Rows {
