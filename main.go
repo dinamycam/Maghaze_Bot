@@ -16,30 +16,42 @@ import (
 )
 
 // SalesKeyboard the main keyboard with buttons for listing status of things
-var SalesKeyboard = tgbotapi.NewReplyKeyboard(
+var Keyboard_page1 = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Routers"),
-		tgbotapi.NewKeyboardButton("Switches"),
-		tgbotapi.NewKeyboardButton("Wires"),
+		tgbotapi.NewKeyboardButton("روتر"),
+		tgbotapi.NewKeyboardButton("سویچ"),
 	),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("close"),
-		tgbotapi.NewKeyboardButton("end"),
+		tgbotapi.NewKeyboardButton("کارت شبکه"),
+		tgbotapi.NewKeyboardButton("مودم"),
+		tgbotapi.NewKeyboardButton("بعدی"),
 	),
 )
+
+var Keyboard_page2 = tgbotapi.NewReplyKeyboard(
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("دوربین"),
+		tgbotapi.NewKeyboardButton("اکسس پوینت"),
+	),
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("تجهیزات رادیویی"),
+		tgbotapi.NewKeyboardButton("هاب و KVM"),
+		tgbotapi.NewKeyboardButton("سیسکو"),
+	),
+)
+
+var helpMessage = `you can use these commands to control this bot
+					/start  starts the bot
+					/help  to see the CommandArguments
+					/login PASSWORD  to gain admin access
+					/logout turn back to a normal user
+					/senddoc send the files to the bot in the next message`
 
 // this is the main
 func main() {
 
 	authorize_admin := false
 	IsDocument := false
-
-	var helpMessage = `you can use these commands to control this bot
-						/start  starts the bot
-						/help  to see the CommandArguments
-						/login PASSWORD  to gain admin access
-						/logout turn back to a normal user
-						/senddoc send the files to the bot in the next message`
 
 	tgbot := os.Getenv("TGBOT")
 	data_dir := os.Getenv("TGBOTDATA")
@@ -61,23 +73,43 @@ func main() {
 		}
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 
+		// testing the disable option temp
+		msg.DisableNotification = true
 		// what every Button does
 		switch update.Message.Text {
 		case "open":
-			msg.ReplyMarkup = SalesKeyboard
+			msg.ReplyMarkup = Keyboard_page1
 		case "close":
 			msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 			// msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
-		case "end":
-			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
-		case "Routers":
-			msg.Text = utils.Tealeg_Excel2str("routers.xlsx", data_dir)
+		case "بعدی":
+			msg.ReplyMarkup = Keyboard_page2
+		case "روتر":
+			msg.Text = utils.Tealeg_Excel2str("router.xlsx", data_dir)
 			fmt.Println(msg.Text)
-		case "Switches":
-			msg.Text = utils.Tealeg_Excel2str("switches.xlsx", data_dir)
+		case "سویچ":
+			msg.Text = utils.Tealeg_Excel2str("switch.xlsx", data_dir)
 			fmt.Println(msg.Text)
-		case "Wires":
-			msg.Text = utils.Tealeg_Excel2str("wires.xlsx", data_dir)
+		case "کارت شبکه":
+			msg.Text = utils.Tealeg_Excel2str("nic.xlsx", data_dir)
+			fmt.Println(msg.Text)
+		case "مودم":
+			msg.Text = utils.Tealeg_Excel2str("modem.xlsx", data_dir)
+			fmt.Println(msg.Text)
+		case "دوربین":
+			msg.Text = utils.Tealeg_Excel2str("camera.xlsx", data_dir)
+			fmt.Println(msg.Text)
+		case "اکسس پوینت":
+			msg.Text = utils.Tealeg_Excel2str("accesspoint.xlsx", data_dir)
+			fmt.Println(msg.Text)
+		case "تجهیزات رادیویی":
+			msg.Text = utils.Tealeg_Excel2str("radio.xlsx", data_dir)
+			fmt.Println(msg.Text)
+		case "سیسکو":
+			msg.Text = utils.Tealeg_Excel2str("cisco.xlsx", data_dir)
+			fmt.Println(msg.Text)
+		case "هاب و KVM":
+			msg.Text = utils.Tealeg_Excel2str("hub&kvm.xlsx", data_dir)
 			fmt.Println(msg.Text)
 		default:
 			if IsDocument {
@@ -93,9 +125,9 @@ func main() {
 		if update.Message.IsCommand() {
 			switch update.Message.Command() {
 			case "start":
-				msg.Text = "Welcome to our shop!"
+				msg.Text = "به مغازه ی ما خوش آمدید!"
 				fmt.Println("data directory: " + data_dir)
-				msg.ReplyMarkup = SalesKeyboard
+				msg.ReplyMarkup = Keyboard_page1
 			case "login":
 				tgpass := update.Message.CommandArguments()
 				fmt.Printf("password entered: = %+v\n", tgpass)
