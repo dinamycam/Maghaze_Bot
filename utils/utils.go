@@ -101,3 +101,7 @@ func Url2File(url, fname string) int64 {
 	n, _ := io.Copy(outfile, resp.Body)
 	return n
 }
+
+func KeyboardGen(button ...string) {
+	//TODO implement a better way of keyboard page generation
+}
