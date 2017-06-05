@@ -32,11 +32,12 @@ var Keyboard_page2 = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("دوربین"),
 		tgbotapi.NewKeyboardButton("اکسس پوینت"),
+		tgbotapi.NewKeyboardButton("تجهیزات رادیویی"),
 	),
 	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("تجهیزات رادیویی"),
 		tgbotapi.NewKeyboardButton("هاب و KVM"),
 		tgbotapi.NewKeyboardButton("سیسکو"),
+		tgbotapi.NewKeyboardButton("قبلی"),
 	),
 )
 
@@ -84,6 +85,8 @@ func main() {
 			// msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		case "بعدی":
 			msg.ReplyMarkup = Keyboard_page2
+		case "قبلی":
+			msg.ReplyMarkup = Keyboard_page1
 		case "روتر":
 			msg.Text = utils.Tealeg_Excel2str("router.xlsx", data_dir)
 			fmt.Println(msg.Text)
