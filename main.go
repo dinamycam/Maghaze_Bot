@@ -20,6 +20,7 @@ var Keyboard_page1 = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("روتر"),
 		tgbotapi.NewKeyboardButton("سویچ"),
+		tgbotapi.NewKeyboardButton("تماس با ما"),
 	),
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("کارت شبکه"),
