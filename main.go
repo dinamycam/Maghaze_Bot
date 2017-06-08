@@ -15,39 +15,41 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-// SalesKeyboard the main keyboard with buttons for listing status of things
-var Keyboard_page1 = tgbotapi.NewReplyKeyboard(
-	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("روتر"),
-		tgbotapi.NewKeyboardButton("سویچ"),
-		tgbotapi.NewKeyboardButton("تماس با ما"),
-	),
-	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("کارت شبکه"),
-		tgbotapi.NewKeyboardButton("مودم"),
-		tgbotapi.NewKeyboardButton("بعدی"),
-	),
-)
+var (
+	// SalesKeyboard the main keyboard with buttons for listing status of things
+	Keyboard_page1 = tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("روتر"),
+			tgbotapi.NewKeyboardButton("سویچ"),
+			tgbotapi.NewKeyboardButton("تماس با ما"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("کارت شبکه"),
+			tgbotapi.NewKeyboardButton("مودم"),
+			tgbotapi.NewKeyboardButton("بعدی"),
+		),
+	)
 
-var Keyboard_page2 = tgbotapi.NewReplyKeyboard(
-	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("دوربین"),
-		tgbotapi.NewKeyboardButton("اکسس پوینت"),
-		tgbotapi.NewKeyboardButton("تجهیزات رادیویی"),
-	),
-	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("هاب و KVM"),
-		tgbotapi.NewKeyboardButton("سیسکو"),
-		tgbotapi.NewKeyboardButton("قبلی"),
-	),
-)
+	Keyboard_page2 = tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("دوربین"),
+			tgbotapi.NewKeyboardButton("اکسس پوینت"),
+			tgbotapi.NewKeyboardButton("تجهیزات رادیویی"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("هاب و KVM"),
+			tgbotapi.NewKeyboardButton("سیسکو"),
+			tgbotapi.NewKeyboardButton("قبلی"),
+		),
+	)
 
-var helpMessage = `you can use these commands to control this bot
+	helpMessage = `you can use these commands to control this bot
 					/start  starts the bot
 					/help  to see the CommandArguments
 					/login PASSWORD  to gain admin access
 					/logout turn back to a normal user
 					/senddoc send the files to the bot in the next message`
+)
 
 // this is the main
 func main() {
@@ -76,7 +78,7 @@ func main() {
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 
 		// testing the disable option temp
-		msg.DisableNotification = true
+		// msg.DisableNotification = true
 		// what every Button does
 		switch update.Message.Text {
 		case "open":
@@ -117,8 +119,16 @@ func main() {
 			fmt.Println(msg.Text)
 		default:
 			if IsDocument {
+				fmt.Println("Waiting for a doc file")
 				msgtime := update.Message.Time()
-				url, _ := bot.GetFileDirectURL(update.Message.Document.FileID)
+				fmt.Println("Getting the url for the message")
+				url, err := bot.GetFileDirectURL(update.Message.Document.FileID)
+				if err != nil {
+					fmt.Println("Didn't get a doc after all")
+					continue
+				}
+
+				fmt.Println("Got a doc at time:")
 				msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
 				utils.Url2File(url, data_dir+"/"+update.Message.Document.FileName)
 
@@ -129,7 +139,7 @@ func main() {
 		if update.Message.IsCommand() {
 			switch update.Message.Command() {
 			case "start":
-				msg.Text = "به مغازه ی ما خوش آمدید!"
+				msg.Text = "به شبکه برتر خوش آمدید!"
 				fmt.Println("data directory: " + data_dir)
 				msg.ReplyMarkup = Keyboard_page1
 			case "login":
@@ -137,8 +147,10 @@ func main() {
 				fmt.Printf("password entered: = %+v\n", tgpass)
 				authorize_admin = password.Pass_checker(&msg.Text, tgpass)
 			case "senddoc":
-				if authorize_admin {
-					msg.Text = "You may Now send the doc"
+				if authorize_admin && !IsDocument {
+					msg.Text = "You can Now send the doc"
+					fmt.Println("Senddoc command entered")
+
 					IsDocument = true
 
 				} else {

@@ -103,5 +103,5 @@ func Url2File(url, fname string) int64 {
 }
 
 func KeyboardGen(button ...string) {
-	//TODO implement a better way of keyboard page generation
+	//TODO implement a better way of keyboard buttons generation
 }
