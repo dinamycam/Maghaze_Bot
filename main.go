@@ -15,42 +15,6 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-var (
-	// SalesKeyboard the main keyboard with buttons for listing status of things
-	Keyboard_page1 = tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("روتر"),
-			tgbotapi.NewKeyboardButton("سویچ"),
-			tgbotapi.NewKeyboardButton("تماس با ما"),
-		),
-		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("کارت شبکه"),
-			tgbotapi.NewKeyboardButton("مودم"),
-			tgbotapi.NewKeyboardButton("بعدی"),
-		),
-	)
-
-	Keyboard_page2 = tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("دوربین"),
-			tgbotapi.NewKeyboardButton("اکسس پوینت"),
-			tgbotapi.NewKeyboardButton("تجهیزات رادیویی"),
-		),
-		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("هاب و KVM"),
-			tgbotapi.NewKeyboardButton("سیسکو"),
-			tgbotapi.NewKeyboardButton("قبلی"),
-		),
-	)
-
-	HelpMessage = `you can use these commands to control this bot
-					/start  starts the bot
-					/help  to see the CommandArguments
-					/login PASSWORD  to gain admin access
-					/logout turn back to a normal user
-					/senddoc send the files to the bot in the next message`
-)
-
 // this is the main
 func main() {
 
@@ -82,14 +46,14 @@ func main() {
 		// what every Button does
 		switch update.Message.Text {
 		case "open":
-			msg.ReplyMarkup = Keyboard_page1
+			msg.ReplyMarkup = utils.Keyboard_page1
 		case "close":
 			msg.ReplyMarkup = tgbotapi.NewHideKeyboard(true)
 			// msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		case "بعدی":
-			msg.ReplyMarkup = Keyboard_page2
+			msg.ReplyMarkup = utils.Keyboard_page2
 		case "قبلی":
-			msg.ReplyMarkup = Keyboard_page1
+			msg.ReplyMarkup = utils.Keyboard_page1
 		case "روتر":
 			msg.Text = utils.Tealeg_Excel2str("router.xlsx", data_dir)
 			fmt.Println(msg.Text)
@@ -141,7 +105,7 @@ func main() {
 			case "start":
 				msg.Text = "به شبکه برتر خوش آمدید!"
 				fmt.Println("data directory: " + data_dir)
-				msg.ReplyMarkup = Keyboard_page1
+				msg.ReplyMarkup = utils.Keyboard_page1
 			case "login":
 				tgpass := update.Message.CommandArguments()
 				fmt.Printf("password entered: = %+v\n", tgpass)
@@ -160,7 +124,7 @@ func main() {
 				authorize_admin = false
 				msg.Text = "you logged out\n switch to normal user"
 			case "help":
-				msg.Text = HelpMessage
+				msg.Text = utils.HelpMessage
 			}
 		}
 		bot.Send(msg)

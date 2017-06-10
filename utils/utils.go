@@ -12,6 +12,43 @@ import (
 
 	"github.com/Luxurioust/excelize"
 	"github.com/tealeg/xlsx"
+	"gopkg.in/telegram-bot-api.v4"
+)
+
+var (
+	// SalesKeyboard the main keyboard with buttons for listing status of things
+	Keyboard_page1 = tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("روتر"),
+			tgbotapi.NewKeyboardButton("سویچ"),
+			tgbotapi.NewKeyboardButton("تماس با ما"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("کارت شبکه"),
+			tgbotapi.NewKeyboardButton("مودم"),
+			tgbotapi.NewKeyboardButton("بعدی"),
+		),
+	)
+
+	Keyboard_page2 = tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("دوربین"),
+			tgbotapi.NewKeyboardButton("اکسس پوینت"),
+			tgbotapi.NewKeyboardButton("تجهیزات رادیویی"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("هاب و KVM"),
+			tgbotapi.NewKeyboardButton("سیسکو"),
+			tgbotapi.NewKeyboardButton("قبلی"),
+		),
+	)
+
+	HelpMessage = `you can use these commands to control this bot
+					/start  starts the bot
+					/help  to see the CommandArguments
+					/login PASSWORD  to gain admin access
+					/logout turn back to a normal user
+					/senddoc send the files to the bot in the next message`
 )
 
 // error check function
