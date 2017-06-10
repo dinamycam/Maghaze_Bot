@@ -43,7 +43,7 @@ var (
 		),
 	)
 
-	helpMessage = `you can use these commands to control this bot
+	HelpMessage = `you can use these commands to control this bot
 					/start  starts the bot
 					/help  to see the CommandArguments
 					/login PASSWORD  to gain admin access
@@ -160,7 +160,7 @@ func main() {
 				authorize_admin = false
 				msg.Text = "you logged out\n switch to normal user"
 			case "help":
-				msg.Text = helpMessage
+				msg.Text = HelpMessage
 			}
 		}
 		bot.Send(msg)
