@@ -60,6 +60,10 @@ func main() {
 		case "سویچ":
 			msg.Text = utils.Tealeg_Excel2str("switch.xlsx", data_dir)
 			fmt.Println(msg.Text)
+
+		case "تماس با ما":
+			msg.Text = utils.Tealeg_Excel2str("contact.xlsx", data_dir)
+			fmt.Println(msg.Text)
 		case "کارت شبکه":
 			msg.Text = utils.Tealeg_Excel2str("nic.xlsx", data_dir)
 			fmt.Println(msg.Text)
