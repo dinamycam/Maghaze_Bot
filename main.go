@@ -18,11 +18,11 @@ import (
 // this is the main
 func main() {
 
-	authorize_admin := false
+	authorizeAdmin := false
 	IsDocument := false
 
 	tgbot := os.Getenv("TGBOT")
-	data_dir := os.Getenv("TGBOTDATA")
+	dataDir := os.Getenv("TGBOTDATA")
 
 	bot, _ := tgbotapi.NewBotAPI(tgbot)
 
@@ -55,35 +55,35 @@ func main() {
 		case "قبلی":
 			msg.ReplyMarkup = utils.Keyboard_page1
 		case "روتر":
-			msg.Text = utils.Tealeg_Excel2str("router.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("router.xlsx", dataDir)
 			fmt.Println(msg.Text)
 		case "سویچ":
-			msg.Text = utils.Tealeg_Excel2str("switch.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("switch.xlsx", dataDir)
 			fmt.Println(msg.Text)
 
 		case "تماس با ما":
-			msg.Text = utils.Tealeg_Excel2str("contact.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("contact.xlsx", dataDir)
 			fmt.Println(msg.Text)
 		case "کارت شبکه":
-			msg.Text = utils.Tealeg_Excel2str("nic.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("nic.xlsx", dataDir)
 			fmt.Println(msg.Text)
 		case "مودم":
-			msg.Text = utils.Tealeg_Excel2str("modem.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("modem.xlsx", dataDir)
 			fmt.Println(msg.Text)
 		case "دوربین":
-			msg.Text = utils.Tealeg_Excel2str("camera.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("camera.xlsx", dataDir)
 			fmt.Println(msg.Text)
 		case "اکسس پوینت":
-			msg.Text = utils.Tealeg_Excel2str("accesspoint.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("accesspoint.xlsx", dataDir)
 			fmt.Println(msg.Text)
 		case "تجهیزات رادیویی":
-			msg.Text = utils.Tealeg_Excel2str("radio.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("radio.xlsx", dataDir)
 			fmt.Println(msg.Text)
 		case "سیسکو":
-			msg.Text = utils.Tealeg_Excel2str("cisco.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("cisco.xlsx", dataDir)
 			fmt.Println(msg.Text)
 		case "هاب و KVM":
-			msg.Text = utils.Tealeg_Excel2str("hub&kvm.xlsx", data_dir)
+			msg.Text = utils.Tealeg_Excel2str("hub&kvm.xlsx", dataDir)
 			fmt.Println(msg.Text)
 		default:
 			if IsDocument {
@@ -98,7 +98,7 @@ func main() {
 
 				fmt.Println("Got a doc at time:")
 				msg.Text = "got a doc at : " + msgtime.Format("Mon Jan 2 15:04:05 MST 2006") + "\n" + url
-				utils.Url2File(url, data_dir+"/"+update.Message.Document.FileName)
+				utils.Url2File(url, dataDir+"/"+update.Message.Document.FileName)
 
 				IsDocument = false
 			}
@@ -108,14 +108,14 @@ func main() {
 			switch update.Message.Command() {
 			case "start":
 				msg.Text = "به شبکه برتر خوش آمدید!"
-				fmt.Println("data directory: " + data_dir)
+				fmt.Println("data directory: " + dataDir)
 				msg.ReplyMarkup = utils.Keyboard_page1
 			case "login":
 				tgpass := update.Message.CommandArguments()
 				fmt.Printf("password entered: = %+v\n", tgpass)
-				authorize_admin = password.Pass_checker(&msg.Text, tgpass)
+				authorizeAdmin = password.Pass_checker(&msg.Text, tgpass)
 			case "senddoc":
-				if authorize_admin && !IsDocument {
+				if authorizeAdmin && !IsDocument {
 					msg.Text = "You can Now send the doc"
 					fmt.Println("Senddoc command entered")
 
@@ -125,7 +125,7 @@ func main() {
 					msg.Text = "You should first try to /login ."
 				}
 			case "logout":
-				authorize_admin = false
+				authorizeAdmin = false
 				msg.Text = "you logged out\n switch to normal user"
 			case "help":
 				msg.Text = utils.HelpMessage
