@@ -1,0 +1,5 @@
+---
+admin_pass: password  # administrator password
+bot_token: "TokenFromBotFather"  # bot token, get from bot father
+bot_data_dir: Dir  # directory to save data
+
