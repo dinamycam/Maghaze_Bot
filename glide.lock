@@ -1,5 +1,5 @@
 hash: 0db25d98cdb3bde60e41c06e42dc88c287b4d6ae89b71105d187448218181c62
-updated: 2017-05-29T15:41:59.736612533+04:30
+updated: 2017-06-29T12:39:08.197058127+04:30
 imports:
 - name: github.com/Luxurioust/excelize
   version: e41ee8a12437250034620285c926cdecbff85e00
@@ -9,4 +9,6 @@ imports:
   version: a90a01d73ae432e2611d178c18367fbaa13e0154
 - name: gopkg.in/telegram-bot-api.v4
   version: 0a57807db79efce7f6719fbb2c0e0f83fda79aec
+- name: gopkg.in/yaml.v2
+  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
 testImports: []
