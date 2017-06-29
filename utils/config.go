@@ -16,32 +16,33 @@ type instanceConfig struct {
 	adminPass  string `yaml:"admin_pass"`
 }
 
-func (c *instanceConfig) readconfig(conf_fname string) error {
-	data, errRead := ioutil.ReadFile("./" + conf_fname)
+func (cnf *instanceConfig) readconfig(confName string) error {
+	data, errRead := ioutil.ReadFile("./" + confName)
 	if errRead != nil {
 		return errRead
 	}
 
-	// =| why doesn't it work?!
-	errEncode := yaml.Unmarshal([]byte(data), &instanceConfig)
+	// it works, idiot me :D
+	errEncode := yaml.Unmarshal([]byte(data), cnf)
 	if errEncode != nil {
 		return errEncode
 	}
 
-	if instanceConfig.botToken == "" {
+	if cnf.botToken == "" {
 		return errors.New("config file: invalid `token`")
-	} else if instanceConfig.botDataDiri == "" {
+	} else if cnf.botDataDir == "" {
 		return errors.New("config file: invalid `data_dir`")
-	} else if instanceConfig.adminPass == "" {
+	} else if cnf.adminPass == "" {
 		return errors.New("config file: invalid `admin password`")
 	}
 	return nil
 }
 
+// FullPath takes a path and returns it's full address
 func FullPath(dir string, fname string) string {
-	full_path := ""
-	full_dir, err := filepath.Abs(dir)
+	fullPath := ""
+	fullDir, err := filepath.Abs(dir)
 	Check(err)
-	full_path = full_dir + "/" + fname
-	return full_path
+	fullPath = fullDir + "/" + fname
+	return fullPath
 }
